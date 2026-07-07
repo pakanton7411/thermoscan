@@ -1,0 +1,18 @@
+name: Build iOS IPA
+on: push
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.22.0'
+    - run: mkdir -p lib && mv main.dart lib/main.dart
+    - run: flutter build ios --no-codesign --release
+    - run: mkdir Payload && mv build/ios/iphoneos/Runner.app Payload/
+    - run: zip -r ThermoScan.ipa Payload
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ipa-file
+        path: ThermoScan.ipa
