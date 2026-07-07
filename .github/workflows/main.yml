@@ -2,32 +2,33 @@ name: Build iOS IPA
 on: push
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.22.0'
         
-    # 1. Создаем чистый проект в новой папке
+    # Создаем чистый проект в новой папке
     - run: flutter create --platforms=ios my_app
     
-    # 2. Переносим твой всеядный код в созданный проект
+    # Переносим твой всеядный код в созданный проект
     - run: cp main.dart my_app/lib/main.dart
     
-    # 3. Переходим в папку и собираем iOS
+    # Собираем iOS
     - run: |
         cd my_app
         flutter build ios --no-codesign --release
         
-    # 4. Пакуем в IPA
+    # Пакуем в IPA
     - run: |
         mkdir Payload
         mv my_app/build/ios/iphoneos/Runner.app Payload/
         zip -r ThermoScan.ipa Payload
         
-    # 5. Выкладываем готовый файл
-    - uses: actions/upload-artifact@v3
+    # Выкладываем готовый файл (ОБНОВЛЕНО ДО V4)
+    - uses: actions/upload-artifact@v4
       with:
         name: ipa-file
         path: ThermoScan.ipa
+
