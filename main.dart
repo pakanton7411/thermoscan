@@ -242,7 +242,7 @@ class _MainContainerState extends State<MainContainer> {
               ),
               onPressed: _loading ? null : _startScanning,
               child: _loading 
-                ? const CircularProgressIndicator(color: Colors.black)
+                ? const CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.black))
                 : const Text('АНАЛИЗИРОВАТЬ ОБЪЕКТ', style: TextStyle(color: Colors.black, fontWeight: FontWeight.black, fontSize: 14, letterSpacing: 1)),
             ),
           ),
