@@ -8,10 +8,21 @@ jobs:
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.22.0'
-    - run: mkdir -p lib && mv main.dart lib/main.dart
+        
+    # Автоматически создаем полноценный каркас приложения вокруг твоего кода
+    - run: flutter create --platforms=ios .
+    
+    # Заменяем дефолтный код на твой всеядный ThermoScan
+    - run: mv main.dart lib/main.dart
+    
+    # Собираем официальный iOS билд
     - run: flutter build ios --no-codesign --release
+    
+    # Пакуем Runner.app в правильный архив .ipa
     - run: mkdir Payload && mv build/ios/iphoneos/Runner.app Payload/
     - run: zip -r ThermoScan.ipa Payload
+    
+    # Выкладываем готовый файл для скачивания
     - uses: actions/upload-artifact@v3
       with:
         name: ipa-file
